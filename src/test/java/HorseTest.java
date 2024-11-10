@@ -73,10 +73,26 @@ class HorseTest {
     }
 
     @Test
-    void moveTest() {
+    void getRandomTest() {
         try (MockedStatic<Horse> mockedStatic = mockStatic(Horse.class)) {
-            new Horse("name", 1, 2);
+            Horse horse = new Horse("name", 1, 2);
+            horse.move();
             mockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9));
+        }
+
+    }
+    @Test
+    void correctValueDistance() {
+        try(MockedStatic<Horse> mockedStatic = mockStatic(Horse.class)) {
+            Horse horse = new Horse("name", 1, 2);
+            double value = 0.4;
+            mockedStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(value);
+            double speed = horse.getSpeed();
+            double distance = horse.getDistance();
+            horse.move();
+            double expectedDistance = distance + speed * value;
+            assertEquals(expectedDistance , horse.getDistance());
+
         }
 
     }
