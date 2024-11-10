@@ -1,10 +1,10 @@
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mockStatic;
 
 class HorseTest {
 
@@ -16,18 +16,20 @@ class HorseTest {
         );
         assertEquals("Name cannot be null.", exception.getMessage());
     }
-@ParameterizedTest
-@ValueSource(strings = {"", " ", "\t", "\n"})
-public void nameParameterConstructorIsEmpty(String name){
 
-    Throwable exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new Horse(name, 1, 1)
-    );
-    assertEquals("Name cannot be blank.", exception.getMessage());
-}
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "\t", "\n"})
+    public void nameParameterConstructorIsEmpty(String name) {
+
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Horse(name, 1, 1)
+        );
+        assertEquals("Name cannot be blank.", exception.getMessage());
+    }
+
     @Test
-    public void speedParameterConstructorIsNegative(){
+    public void speedParameterConstructorIsNegative() {
 
         Throwable exception = assertThrows(
                 IllegalArgumentException.class,
@@ -35,8 +37,9 @@ public void nameParameterConstructorIsEmpty(String name){
         );
         assertEquals("Speed cannot be negative.", exception.getMessage());
     }
+
     @Test
-    public void distanceParameterConstructorIsNegative(){
+    public void distanceParameterConstructorIsNegative() {
 
         Throwable exception = assertThrows(
                 IllegalArgumentException.class,
@@ -45,32 +48,36 @@ public void nameParameterConstructorIsEmpty(String name){
         assertEquals("Distance cannot be negative.", exception.getMessage());
     }
 
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
+    @Test
+    void getNameTest() {
+        Horse horse = new Horse("name", 1, 2);
+        assertEquals("name", horse.getName());
     }
 
     @Test
-    void getName() {
+    void getSpeedTest() {
+        Horse horse = new Horse("name", 1, 2);
+        assertEquals(1, horse.getSpeed());
     }
 
     @Test
-    void getSpeed() {
+    void getDistanceTest() {
+        Horse horse = new Horse("name", 1, 2);
+        assertEquals(2, horse.getDistance());
     }
 
     @Test
-    void getDistance() {
+    void getDistanceTestByDefault() {
+        Horse horse = new Horse("name", 1);
+        assertEquals(0, horse.getDistance());
     }
 
     @Test
-    void move() {
-    }
+    void moveTest() {
+        try (MockedStatic<Horse> mockedStatic = mockStatic(Horse.class)) {
+            new Horse("name", 1, 2);
+            mockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9));
+        }
 
-    @Test
-    void getRandomDouble() {
     }
 }
