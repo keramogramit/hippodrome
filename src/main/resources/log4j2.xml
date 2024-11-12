@@ -3,7 +3,7 @@
     <Appenders>
         <RollingFile name="FileLog" fileName="logs/hippodrome.log"
                      filePattern="logs/hippodrome-%d{yyyy-MM-dd}.log">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c - %msg%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c: %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
                 <DefaultRolloverStrategy>
